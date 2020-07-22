@@ -1,11 +1,11 @@
-FROM mongo
+FROM mongo:3.6
 
 # Install Python and Cron
 RUN apt-get update && apt-get -y install awscli cron
 
 ENV CRON_TIME="0 3 * * *" \
-  TZ=US/Eastern \
-  CRON_TZ=US/Eastern
+  TZ=Europe/Moscow \
+  CRON_TZ=Europe/Moscow
 
 ADD run.sh /run.sh
 CMD /run.sh
