@@ -29,6 +29,8 @@ BACKUP_NAME=\${TIMESTAMP}.dump.gz
 S3BACKUP=${S3PATH}\${BACKUP_NAME}
 S3LATEST=${S3PATH}latest.dump.gz
 aws configure set default.s3.signature_version s3v4
+aws configure set default.s3.multipart_threshold 512MB
+aws configure set default.s3.multipart_chunksize 128MB
 aws configure set default.region ${BUCKET_REGION}
 echo "=> Backup started"
 if mongodump --host ${MONGODB_HOST} --port ${MONGODB_PORT} ${USER_STR}${PASS_STR}${DB_STR} --archive=\${BACKUP_NAME} --gzip ${EXTRA_OPTS} && aws ${ENDPOINT_STR} s3 cp \${BACKUP_NAME} \${S3BACKUP} && aws ${ENDPOINT_STR} s3 cp \${S3BACKUP} \${S3LATEST} && rm \${BACKUP_NAME} ;then
